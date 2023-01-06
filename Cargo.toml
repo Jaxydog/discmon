@@ -1,0 +1,42 @@
+[package]
+name = "discmon"
+version = "0.1.0"
+authors = ["Jaxydog"]
+edition = "2021"
+description = "Pokémon rolling bot for fun and not really profit but y'know"
+readme = "README.md"
+repository = "https://github.com/Jaxydog/discmon"
+license-file = "LICENSE"
+keywords = ["api", "async", "http", "pokemon", "discord", "bot"]
+categories = ["asynchronous"]
+publish = false
+
+[dependencies]
+anyhow = "1.0"
+colored = "2.0"
+dotenvy = "0.15"
+rand = "0.8"
+rmp-serde = "1.1"
+rustemon = "3.0"
+
+[dependencies.chrono]
+version = "0.4"
+features = ["serde"]
+
+[dependencies.clap]
+version = "4.0"
+features = ["derive"]
+
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
+
+[dependencies.serenity]
+git = "https://github.com/serenity-rs/serenity"
+branch = "next"
+default-features = false
+features = ["builder", "cache", "chrono", "client", "collector", "gateway", "http", "model", "rustls_backend", "utils", "unstable_discord_api"]
+
+[dependencies.tokio]
+version = "1.23"
+features = ["full"]
