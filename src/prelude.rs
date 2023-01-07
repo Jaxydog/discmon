@@ -10,16 +10,18 @@ pub use rand::prelude::*;
 pub use serde::{Deserialize, Serialize};
 pub use serenity::{
     all::{
-        async_trait, ActionRow, ActionRowComponent, CacheHttp, Channel, Client, Color,
-        CommandInteraction, ComponentInteraction, Context, EventHandler, GatewayIntents,
+        async_trait, ActionRow, ActionRowComponent, CacheHttp, Channel, Client, Color, Command,
+        CommandInteraction, CommandOptionType, CommandPermission, CommandPermissionData,
+        CommandPermissionType, ComponentInteraction, Context, EventHandler, GatewayIntents,
         GuildChannel, Http, Interaction, Message, ModalInteraction, PartialChannel, PartialGuild,
-        PartialMember, PrivateChannel, ResolvedOption, ResolvedValue, Role, User,
+        PartialMember, Permissions, PrivateChannel, ResolvedOption, ResolvedValue, Role, User,
     },
     builder::*,
     model::id::*,
 };
 
 pub use crate::{
+    command::*,
     event::*,
     util::{anchor::*, custom_id::*, data::*, logger::*, timestamp::*, traits::*},
 };

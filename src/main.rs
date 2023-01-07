@@ -1,4 +1,10 @@
-#![feature(const_trait_impl, is_some_and, iter_array_chunks, result_flattening)]
+#![feature(
+    const_trait_impl,
+    extend_one,
+    is_some_and,
+    iter_array_chunks,
+    result_flattening
+)]
 #![deny(clippy::expect_used, clippy::panic, clippy::unwrap_used)]
 #![warn(clippy::cargo, clippy::nursery, clippy::pedantic)]
 #![warn(clippy::todo, clippy::unimplemented, clippy::unreachable)]

@@ -17,7 +17,7 @@ impl Events {
 
     pub async fn create_commands(&self, http: &Http) -> Result<()> {
         let guild_id = dev_guild()?;
-        let cmds = vec![];
+        let cmds = vec![data::new(), help::new(), ping::new()];
 
         let global = if DEV_BUILD {
             http.get_global_application_commands().await?.len()
@@ -37,27 +37,27 @@ impl Events {
 
 #[async_trait]
 impl EventHandler for Events {
-    async fn ready(&self, ctx: Context, ready: Ready) {
+    async fn ready(&self, context: Context, ready: Ready) {
         info!(self.logger, "Connected as \"{}\"", ready.user.tag());
 
         if let Some(count) = ready.shard.map(|s| s.total) {
             info!(self.logger, "Using {count} shards");
         }
 
-        ctx.set_presence(Some(ActivityData::listening("/help")), OnlineStatus::Idle);
+        context.set_presence(Some(ActivityData::listening("/help")), OnlineStatus::Idle);
 
-        if let Err(error) = self.create_commands(ctx.http()).await {
+        if let Err(error) = self.create_commands(context.http()).await {
             let time = Local::now();
 
             error!(self.logger, time, "Error creating commands: {error}");
         }
     }
 
-    async fn message(&self, ctx: Context, message: Message) {}
+    // async fn message(&self, context: Context, message: Message) {}
 
     #[allow(clippy::match_wildcard_for_single_variants)]
-    async fn interaction_create(&self, ctx: Context, mut interaction: Interaction) {
-        let http = ctx.http();
+    async fn interaction_create(&self, context: Context, mut interaction: Interaction) {
+        let http = context.http();
         let id = match &interaction {
             Interaction::Autocomplete(i) => format!("{}<acp:{}>", i.data.name, i.id),
             Interaction::Command(i) => format!("{}<cmd:{}>", i.data.name, i.id),
@@ -68,7 +68,9 @@ impl EventHandler for Events {
 
         let result: Result<()> = match &mut interaction {
             Interaction::Command(command) => match command.data.name.as_str() {
-                "" => todo!(),
+                data::NAME => data::command(&context, command).await,
+                help::NAME => help::command(&context, command).await,
+                ping::NAME => ping::command(&context, command).await,
                 _ => Err(anyhow!("unknown interaction: {id}")),
             },
             _ => Err(anyhow!("unknown interaction: {id}")),

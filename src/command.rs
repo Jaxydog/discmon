@@ -1,5 +1,9 @@
 use crate::prelude::*;
 
+pub mod data;
+pub mod help;
+pub mod ping;
+
 macro_rules! getter {
     ($id:ident($inner:path) -> $output:ty) => {
         #[allow(dead_code)]

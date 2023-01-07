@@ -1,0 +1,2 @@
+DiscMon is an open-source Pokémon rolling bot that I made for fun.
+If you have any questions about the project, you can ask me directly <@206260650010345483> <3
