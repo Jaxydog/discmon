@@ -58,6 +58,7 @@ async fn clock(logger: Logger, secs: u64, token: String) -> ! {
 #[tokio::main]
 async fn main() -> Result<()> {
     dotenvy::dotenv()?;
+
     let Args {
         quiet,
         ephemeral,
@@ -66,10 +67,11 @@ async fn main() -> Result<()> {
 
     let token = token()?;
     let logger = Logger::new(quiet, ephemeral)?;
+    let pokeapi = RustemonClient::new(CacheMode::Default, Some(CacheOptions::default()));
 
     info!(logger, "Starting...");
 
-    let event_handler = Events::new(logger.clone());
+    let event_handler = Events::new(logger.clone(), pokeapi);
     let mut client = Client::builder(&token, INTENTS)
         .event_handler(event_handler)
         .await?;

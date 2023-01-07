@@ -7,6 +7,7 @@ pub use std::{
 pub use anyhow::{anyhow, Result};
 pub use chrono::prelude::*;
 pub use rand::prelude::*;
+pub use rustemon::{client::*, Follow};
 pub use serde::{Deserialize, Serialize};
 pub use serenity::{
     all::{

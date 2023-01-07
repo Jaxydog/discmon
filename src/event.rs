@@ -5,14 +5,14 @@ use serenity::{
 
 use crate::{dev_guild, error, info, prelude::*, DEV_BUILD};
 
-#[derive(Debug)]
 pub struct Events {
     pub logger: Logger,
+    pub pokeapi: RustemonClient,
 }
 
 impl Events {
-    pub const fn new(logger: Logger) -> Self {
-        Self { logger }
+    pub const fn new(logger: Logger, pokeapi: RustemonClient) -> Self {
+        Self { logger, pokeapi }
     }
 
     pub async fn create_commands(&self, http: &Http) -> Result<()> {
