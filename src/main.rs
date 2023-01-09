@@ -28,13 +28,13 @@ pub const INTENTS: GatewayIntents = GatewayIntents::non_privileged();
 struct Args {
     /// Disables the logger's console output
     #[arg(long, short)]
-    quiet: bool,
+    pub quiet: bool,
     /// Disables the logger's file output
     #[arg(long, short)]
-    ephemeral: bool,
+    pub ephemeral: bool,
     /// The number of seconds between clock ticks
     #[arg(default_value = "10", long, short)]
-    clock: u64,
+    pub clock: u64,
 }
 
 fn token() -> Result<String> {
@@ -44,11 +44,11 @@ fn dev_guild() -> Result<GuildId> {
     Ok(GuildId::new(std::env::var("DEV_GUILD")?.parse()?))
 }
 
-async fn clock(logger: Logger, secs: u64, token: String) -> ! {
-    let mut interval = tokio::time::interval(std::time::Duration::from_secs(secs));
+async fn timer(logger: Logger, clock: u64, token: String) -> ! {
+    let mut interval = tokio::time::interval(std::time::Duration::from_secs(clock));
     let http = std::sync::Arc::new(Http::new(&token));
 
-    info!(logger, "Clock started ({secs} secs)");
+    info!(logger, "Timer started ({clock} secs)");
 
     loop {
         interval.tick().await;
@@ -62,7 +62,7 @@ async fn main() -> Result<()> {
     let Args {
         quiet,
         ephemeral,
-        clock: secs,
+        clock,
     } = Args::try_parse()?;
 
     let token = token()?;
@@ -76,6 +76,6 @@ async fn main() -> Result<()> {
         .event_handler(event_handler)
         .await?;
 
-    tokio::spawn(clock(logger, secs, token.clone()));
+    tokio::spawn(timer(logger, clock, token.clone()));
     client.start_autosharded().await.map_err(Into::into)
 }
